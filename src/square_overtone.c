@@ -3,7 +3,7 @@
 #include <math.h>
 #include "../include/sounds.h"
 
-void set_data_params_square(paTestData* data) {
+void set_data_params_sqr_overtone(paTestData* data) {
     data->left_phase = data->right_phase = 0.0;
     data->time = 0;
     data->envelope = 0;
@@ -20,7 +20,7 @@ void set_data_params_square(paTestData* data) {
  * It may called at interrupt level on some machines so don't do anything
  * that could mess up the system like calling malloc() or free().
 */ 
-int play_square( const void *inputBuffer, void *outputBuffer,
+int play_sqr_overtone( const void *inputBuffer, void *outputBuffer,
     unsigned long framesPerBuffer,
     const PaStreamCallbackTimeInfo* timeInfo,
     PaStreamCallbackFlags statusFlags,
@@ -35,7 +35,6 @@ unsigned int i;
 for( i=0; i<framesPerBuffer; i++ ) {
     // Make values 1 or -1 to create suare wave.
     if (data->left_phase < 0) {
-
         *out++ = 1 * data->envelope;  /* left */
         *out++ = -1 * data->envelope;  /* right */
     }
@@ -43,8 +42,13 @@ for( i=0; i<framesPerBuffer; i++ ) {
         *out++ = -1 * data->envelope;  /* left */
         *out++ = 1 * data->envelope;  /* right */
     }
+
     /* Generate simple sawtooth phaser that ranges between -1.0 and 1.0. */
-    data->left_phase += 0.01f;
+    //Alter frequency to create overtone
+    if (i % 8 == 0 || i % 8 == 1 || i % 8 == 2 || i % 8 == 3)
+        data->left_phase += 0.010f;
+    else
+        data->left_phase += 0.02f;
     /* When signal reaches top, drop back down. */
     if( data->left_phase >= 1.0f ) data->left_phase -= 2.0f;
     }

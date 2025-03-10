@@ -1,6 +1,6 @@
 NAME = synthesizer
 
-SRC = main.c saw.c square.c triangle.c
+SRC = main.c saw.c square.c triangle.c square_overtone.c
 
 OBJ = $(SRC:.c=.o)
 

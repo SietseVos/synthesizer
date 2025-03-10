@@ -6,12 +6,13 @@
 #include "../include/sounds.h"
 
 #define SAMPLE_RATE (44100)
-#define NUM_SECONDS 5
+#define NUM_SECONDS 4
 
 enum sounds {
     SAW,
     SQUARE,
-    TRIANGLE
+    TRIANGLE,
+    SQUARE_OVERTONE
 };
 
 paTestData data;
@@ -23,9 +24,10 @@ int main(int argc, char** argv)
     const char saw[] = "saw";
     const char square[] = "square";
     const char triangle[] = "triangle";
+    const char sqr_overtone[] = "square_overtone";
     int selected_sound;
     if (argc < 2) {
-        printf("Specify sound to play: %s, %s, %s.\n", saw, square, triangle);
+        printf("Specify sound to play: %s, %s, %s, %s.\n", saw, square, triangle, sqr_overtone);
         exit(1);
     }
     if (strcmp(argv[1], "saw") == 0)
@@ -34,9 +36,11 @@ int main(int argc, char** argv)
         selected_sound = SQUARE;
     else if (strcmp(argv[1], "triangle") == 0)
         selected_sound = TRIANGLE;
+    else if (strcmp(argv[1], "square_overtone") == 0)
+        selected_sound = SQUARE_OVERTONE;
     else {
         printf("%s doesnt equal any valid input.\n", argv[1]);
-        printf("Specify sound to play: %s, %s, %s.\n", saw, square, triangle);
+        printf("Specify sound to play: %s, %s, %s, %s.\n", saw, square, triangle, sqr_overtone);
         exit(1);
         
     }
@@ -79,6 +83,17 @@ int main(int argc, char** argv)
                 SAMPLE_RATE,
                 256,
                 play_triangle,
+                &data );
+            break;
+            case SQUARE_OVERTONE:
+            set_data_params_sqr_overtone(&data);
+            err = Pa_OpenDefaultStream( &stream,
+                0,
+                2,
+                paFloat32,
+                SAMPLE_RATE,
+                256,
+                play_sqr_overtone,
                 &data );
             break;
         default:

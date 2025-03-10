@@ -60,4 +60,11 @@ int play_triangle( const void *inputBuffer, void *outputBuffer,
         void *userData );
 void set_data_params_triangle(paTestData* data);
 
+int play_sqr_overtone( const void *inputBuffer, void *outputBuffer,
+    unsigned long framesPerBuffer,
+    const PaStreamCallbackTimeInfo* timeInfo,
+    PaStreamCallbackFlags statusFlags,
+    void *userData );
+void set_data_params_sqr_overtone(paTestData* data);
+
 #endif
